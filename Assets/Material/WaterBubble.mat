@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterBubble
+  m_Shader: {fileID: -6465566751694194690, guid: b5652a196854240b29af290b57db7864,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - Vector1_21359387: 0.59
+    - Vector1_6B3FA9B4: 0.67
+    - Vector1_6D90BA0: 0.37
+    - Vector1_AE141695: 1.63
+    - Vector1_D113ACD8: 0.04
+    m_Colors:
+    - Color_8B7AC404: {r: 0.63529414, g: 0.8117648, b: 0.8352942, a: 1}
