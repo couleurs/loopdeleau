@@ -5,7 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    public GameObject Pivot;
+    [Tooltip("This is the gameobject the camera follows")]
+    public GameObject CameraPivot;
+
+    [Tooltip("Leave this object null if you don't want the render transform to be set by the player script")]
+    public GameObject Render;
 
     [Header("Controls")]
     public float SlopeVelocity = 1.0f;
@@ -43,7 +47,8 @@ public class Player : MonoBehaviour
         }
 
         //change pivot direction
-        if (Pivot != null && _downHill != Vector3.zero) { Pivot.transform.forward = _downHill; }
+        if (CameraPivot != null && _downHill != Vector3.zero) { CameraPivot.transform.forward = _downHill; }
+        if (Render != null) { Render.transform.forward = _rigidBody.velocity; }
     }
 
     //All physics happen in the fixed update
@@ -68,7 +73,7 @@ public class Player : MonoBehaviour
             //_rigidBody.AddTorque(-_horizontalVector * 100);
             //_rigidBody.angularVelocity *= (1 - _horizontalInput * Time.fixedDeltaTime);
             _rigidBody.velocity += _horizontalVector * Time.deltaTime * InputVelocity;
-            _rigidBody.velocity += Pivot.transform.forward * Time.deltaTime * -.1f;
+            _rigidBody.velocity += CameraPivot.transform.forward * Time.deltaTime * -.1f; //this slows down the forward speed a bit
         }
     }
 
