@@ -81,10 +81,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   State: 0
   CameraPivot: {fileID: 4566246706765642763}
-  Render: {fileID: 4566246705941057104}
+  WaterRender: {fileID: 4566246705941057104}
+  CloudRender: {fileID: 7255558165888475581}
   CloudLevel: {fileID: 0}
-  InputVelocity: 1
   ForwardVelocity:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -1
+      value: -2
+      inSlope: -0.050978847
+      outSlope: -0.050978847
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: -0.5
+      value: 0
+      inSlope: 0.09424295
+      outSlope: 0.09424295
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.9747233
+      outWeight: 0.5588597
+    - serializedVersion: 3
+      time: 0.5
+      value: 0
+      inSlope: 0.042279113
+      outSlope: 0.042279113
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.44886148
+      outWeight: 0.9971672
+    - serializedVersion: 3
+      time: 1
+      value: 2
+      inSlope: -0.3733945
+      outSlope: -0.3733945
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.69705886
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HorizontalVelocity:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -97,31 +139,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.20477004
-      value: 0.0027729366
-      inSlope: 0.056656584
-      outSlope: 0.056656584
+      time: 1
+      value: 3
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.2754292
-    - serializedVersion: 3
-      time: 0.49890292
-      value: -0.095915735
-      inSlope: -0.013736382
-      outSlope: -0.013736382
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.34998217
-    - serializedVersion: 3
-      time: 0.9979729
-      value: 0.49684638
-      inSlope: 3.2490652
-      outSlope: 3.2490652
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.09215126
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -148,6 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e73daeced322e439588895e22128d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CloudMaterial: {fileID: 0}
+  WaterMaterial: {fileID: 0}
 --- !u!114 &6123992964836429866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,10 +409,16 @@ PrefabInstance:
     - target: {fileID: 2690566510200383865, guid: a6cda45400bdd504e8ec1a5503926fcc,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6cda45400bdd504e8ec1a5503926fcc, type: 3}
+--- !u!1 &7255558165888475581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2690566510200383865, guid: a6cda45400bdd504e8ec1a5503926fcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 4748522755374827716}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7255558165888475580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2690566510200383864, guid: a6cda45400bdd504e8ec1a5503926fcc,
