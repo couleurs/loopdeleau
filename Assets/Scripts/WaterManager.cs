@@ -58,11 +58,6 @@ public class WaterManager : MonoBehaviour
             transform.localScale = Vector3.Lerp(transform.localScale, _scale, Time.deltaTime / 2);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DropWater();
-        }
-
         //while the list isn't full we instantiate pickups
         if (_instantiateIndex >= PickUpPopulation) return;
         GameObject pickUp = InstiantiatePickUp();
