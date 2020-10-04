@@ -101,7 +101,6 @@ public class WaterManager : MonoBehaviour
 
         //pick up droplet
         _pickUpIndices.Add(pickup.GetIndex());
-        Debug.Log("Picked: " + pickup.GetIndex());
         pickup.PickUp();
         WaterBalance++;
 
@@ -113,9 +112,6 @@ public class WaterManager : MonoBehaviour
 
     public void DropWater()
     {
-        //if we are out of water, we switch out of cloud
-        if (_pickUpIndices.Count == 0) { GetComponent<Player>().ExitCloud(); return; }
-
         //test if below cloud is appropriate drop position (i.e. it is a piece of terrain)
         Vector3 rayStart = transform.position; //Add ignore masks for future only testing terrain
         rayStart.y = Y;
@@ -138,5 +134,8 @@ public class WaterManager : MonoBehaviour
         _scale.x -= StartScale;
         _scale.y -= StartScale;
         _scale.z -= StartScale;
+
+        //if we are out of water, we switch out of cloud
+        if (_pickUpIndices.Count == 0) { GetComponent<Player>().ExitCloud(); return; }
     }
 }

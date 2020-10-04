@@ -29,8 +29,8 @@ public class Player : MonoBehaviour
     [Tooltip("Velocity multiplier for input forward/back movement")]
     public AnimationCurve HorizontalVelocity;
 
-    [Tooltip("Each RainRate interval in seconds, the cloud will drop water, once all water is dropped, it transitions to rain")]
-    public float RainRate = 3.0f;
+    [Tooltip("This is how long the player will stay a cloud")]
+    public float CloudTime = 15.0f;
 
     [Header("Environment Velocity")]
     [Tooltip("Velocity multiplier when on a sloped surface")]
@@ -49,8 +49,8 @@ public class Player : MonoBehaviour
     [Tooltip("When the player hits the ocean, the amount of time they float out")]
     public float FloatTime = 5.0f;
 
-    [Tooltip("This is how long it will take the player to go from the sky to the ground")]
-    public float RainTime = 2.0f;
+    [Tooltip("This is the rate it will take the player to go from the sky to the ground")]
+    public float RainRate = 2.0f;
 
     [Header("Raycast Layers")]
     public LayerMask RaycastLayers;
@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     private Vector3 _horizontalVector;
     private Vector3 _transitionPosition = Vector3.zero;
     private float _transitionTime = 0;
+    private float _cloudDropRate;
 
     private void Awake()
     {
@@ -115,7 +116,6 @@ public class Player : MonoBehaviour
         //get horizontal and vertical/forward input information and align it with camera direction
         _horizontalInput = GetHorizontalInput();
         _verticalInput = GetVerticalInput();
-        Debug.Log("rb: " + _rigidBody.velocity.magnitude);
 
         if (_horizontalInput != 0)
         {
@@ -125,9 +125,27 @@ public class Player : MonoBehaviour
         }
 
         //change pivot direction, and render direction for camera and rendering coordination
-        if (CameraPivot != null) { CameraPivot.transform.forward = _direction; }
-        if (WaterRender != null) { WaterRender.transform.forward = _rigidBody.velocity; }
-        if (CloudRender != null) { CloudRender.transform.forward = _rigidBody.velocity; }
+        if (CameraPivot != null)
+        {
+            if (_direction != Vector3.zero)
+                CameraPivot.transform.forward = _direction;
+            else
+                CameraPivot.transform.forward = Camera.main.transform.forward;
+        }
+        if (WaterRender != null)
+        {
+            if (_rigidBody.velocity != Vector3.zero)
+                WaterRender.transform.forward = _rigidBody.velocity;
+            else
+                WaterRender.transform.forward = CameraPivot.transform.forward;
+        }
+        if (CloudRender != null)
+        {
+            if (_rigidBody.velocity != Vector3.zero)
+                CloudRender.transform.forward = _rigidBody.velocity;
+            else
+                CloudRender.transform.forward = CameraPivot.transform.forward;
+        }
         if (_visualState != null) { _visualState.UpdateVisualStates(State, _rigidBody.velocity, transform.position.y); }
     }
 
@@ -140,7 +158,7 @@ public class Player : MonoBehaviour
     {
         _direction = WindDirection();
         _transitionTime += Time.deltaTime;
-        if (_transitionTime < RainRate) return;
+        if (_transitionTime < _cloudDropRate) return;
 
         if (GetComponent<WaterManager>() == null) return;
 
@@ -153,6 +171,7 @@ public class Player : MonoBehaviour
         _transitionTime = 0;
         State = PlayerState.RAIN;
         if (_visualState != null) { _visualState.StartVisualStates(State); }
+        //_rigidBody.velocity = Vector3.zero;
     }
 
     //All physics happen in the fixed update
@@ -208,7 +227,7 @@ public class Player : MonoBehaviour
     {
         //apply wind
         _rigidBody.AddForce(_direction * WindVelocity, ForceMode.Acceleration);
-
+        //_rigidBody.velocity = _direction * WindVelocity * Time.deltaTime;
         //apply horizontal input force
         if (_horizontalInput != 0)
         {
@@ -241,23 +260,27 @@ public class Player : MonoBehaviour
         _transitionTime = 0;
         _transitionPosition = Vector3.zero;
         _rigidBody.velocity = Vector3.zero;
+        _cloudDropRate = CloudTime / GetComponent<WaterManager>().WaterBalance;
     }
 
     private void FixedRain()
     {
+        _rigidBody.velocity *= 0.9f;
+
         //check the train right below the player
         RaycastHit hit;
-        if (!Physics.Raycast(transform.position, Vector3.down, out hit)) return; //if nothing is hit we return zero
+        if (!Physics.Raycast(transform.position, Vector3.down, out hit, RaycastLayers)) return; //if nothing is hit we return zero
         if (hit.transform.gameObject.tag != "Terrain") return;
         if (_transitionPosition == Vector3.zero) _transitionPosition = transform.position;
 
+        Debug.Log("FixedRain");
         //move object towards ground
         _transitionTime += Time.deltaTime;
-        Vector3 move = Vector3.Lerp(_transitionPosition, hit.point, _transitionTime / RainTime);
+        Vector3 move = Vector3.Lerp(transform.position, hit.point, Time.deltaTime * RainRate);
         _rigidBody.MovePosition(move);
 
         //check how far we are away from the gounrd
-        if (hit.distance > transform.localScale.y / 2) return;
+        if (!Physics.SphereCast(transform.position, transform.localScale.y / 2, Vector3.down, out hit, transform.localScale.y / 2, RaycastLayers)) return;
 
         //once we have reached the ground, we need to transition out of the rain state and into the water state
         State = PlayerState.WATER;

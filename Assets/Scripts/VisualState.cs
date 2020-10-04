@@ -4,9 +4,38 @@ using UnityEngine;
 
 public class VisualState : MonoBehaviour
 {
+    [Header("Render Objects")]
+    public GameObject CloudRender;
+
+    public GameObject WaterRender;
+
+    private Material CloudMaterial;
+
+    private Material WaterMaterial;
+
+    [Header("Light")]
+    public Light DirectionLight;
+
     private Vector3 _velocity; //current velocity vector of the player, use magnitude for strength
     private float _height; //current height of the player
     private float _maxHeight; //max height allowed for player, can be used to normalize height
+
+    private string _cloudFade = "Vector1_39F0E4CA";
+    private string _waterFade = "Vector1_A4604455";
+    private float _shadowMax;
+
+    public void Start()
+    {
+        CloudMaterial = CloudRender.GetComponent<MeshRenderer>().material;
+        WaterMaterial = WaterRender.GetComponent<MeshRenderer>().material;
+
+        CloudMaterial.SetFloat(_cloudFade, 0);
+        WaterMaterial.SetFloat(_waterFade, 0);
+        _shadowMax = DirectionLight.shadowStrength;
+        DirectionLight.shadowStrength = 0;
+
+        CloudRender.SetActive(false);
+    }
 
     //Called once when state switched
     public void StartVisualStates(Player.PlayerState State)
@@ -38,6 +67,7 @@ public class VisualState : MonoBehaviour
     //Called once when switch to Water state
     private void StartWater()
     {
+        CloudRender.SetActive(false);
     }
 
     //Called once when switch to Cloud state
@@ -48,11 +78,14 @@ public class VisualState : MonoBehaviour
     //Called once when switch to Steam state
     private void StartSteam()
     {
+        CloudRender.SetActive(true);
+        WaterRender.SetActive(false);
     }
 
     //Called once when switch to Rain state
     private void StartRain()
     {
+        WaterRender.SetActive(true);
     }
 
     //Called once when switch to Float state
@@ -93,6 +126,16 @@ public class VisualState : MonoBehaviour
     //Called once per frame during Water state
     private void UpdateWater()
     {
+        if (WaterMaterial.GetFloat(_waterFade) == 1) return;
+
+        //fade in water material
+        float fade = Mathf.Lerp(WaterMaterial.GetFloat(_waterFade), 1, Time.deltaTime);
+        WaterMaterial.SetFloat(_waterFade, fade);
+
+        //fade in light shadow
+        if (DirectionLight.shadowStrength >= _shadowMax) return;
+        float shadow = Mathf.Lerp(DirectionLight.shadowStrength, _shadowMax, Time.deltaTime);
+        DirectionLight.shadowStrength = shadow;
     }
 
     //Called once per frame during Cloud state
@@ -103,16 +146,31 @@ public class VisualState : MonoBehaviour
     //Called once per frame during Steam state
     private void UpdateSteam()
     {
+        CloudMaterial.SetFloat(_cloudFade, _height / _maxHeight);
     }
 
     //Called once per frame during Rain state
     private void UpdateRain()
     {
+        if (CloudMaterial.GetFloat(_cloudFade) == 0) return;
+
+        //fade out water material
+        float fade = Mathf.Lerp(CloudMaterial.GetFloat(_cloudFade), 0, Time.deltaTime);
+        CloudMaterial.SetFloat(_cloudFade, fade);
     }
 
     //Called once per frame during Float state
     private void UpdateFloat()
     {
+        if (WaterMaterial.GetFloat(_waterFade) == 0) return;
+
+        //fade out water material
+        float fade = Mathf.Lerp(WaterMaterial.GetFloat(_waterFade), 0, Time.deltaTime);
+        WaterMaterial.SetFloat(_waterFade, fade);
+
+        if (DirectionLight.shadowStrength <= 0) return;
+        float shadow = Mathf.Lerp(DirectionLight.shadowStrength, 0, Time.deltaTime);
+        DirectionLight.shadowStrength = shadow;
     }
 
     public void SetMaxHeight(float height)

@@ -150,13 +150,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  RainRate: 3
+  CloudTime: 20
   SlopeVelocity: 1
   GravityVelocity: 5
-  WindVelocity: 0.5
+  WindVelocity: 0.25
   EvaporationTime: 10
   FloatTime: 5
-  RainTime: 2
+  RainRate: 0.25
   RaycastLayers:
     serializedVersion: 2
     m_Bits: 512
@@ -172,8 +172,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e73daeced322e439588895e22128d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CloudMaterial: {fileID: 0}
-  WaterMaterial: {fileID: 0}
+  CloudRender: {fileID: 7255558165888475581}
+  WaterRender: {fileID: 4566246705941057104}
+  DirectionLight: {fileID: 0}
 --- !u!114 &6123992964836429866
 MonoBehaviour:
   m_ObjectHideFlags: 0

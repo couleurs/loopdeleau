@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cloud
-  m_Shader: {fileID: -6465566751694194690, guid: 1975460f46c5a4101a40e862a886ac3c,
+  m_Name: WaterPickUp
+  m_Shader: {fileID: -6465566751694194690, guid: b5652a196854240b29af290b57db7864,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -21,12 +21,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - Vector1_38F52F6: 1.96
-    - Vector1_39F0E4CA: 0.98099136
-    - Vector1_48F415EB: 0.14
-    - Vector1_F287531E: 4.06
-    - Vector1_F3403363: 0.07
+    - Vector1_21359387: 0.59
+    - Vector1_6B3FA9B4: 0.73
+    - Vector1_6D90BA0: 0.46
+    - Vector1_A4604455: 1
+    - Vector1_AE141695: 1.63
+    - Vector1_D113ACD8: 0.11
     m_Colors:
-    - Color_34773BFC: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
-    - Color_8C52CEF: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
-    - Color_9FFEF677: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
+    - Color_8B7AC404: {r: 0.63529414, g: 0.8117648, b: 0.8352942, a: 1}
