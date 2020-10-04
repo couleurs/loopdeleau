@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
         {
             _visualState = GetComponent<VisualState>();
             _visualState.SetMaxHeight(_cloudHeight);
+            _visualState.SetCloudTime(CloudTime);
             _visualState.StartVisualStates(State);
         }
     }
@@ -273,7 +274,6 @@ public class Player : MonoBehaviour
         if (hit.transform.gameObject.tag != "Terrain") return;
         if (_transitionPosition == Vector3.zero) _transitionPosition = transform.position;
 
-        Debug.Log("FixedRain");
         //move object towards ground
         _transitionTime += Time.deltaTime;
         Vector3 move = Vector3.Lerp(transform.position, hit.point, Time.deltaTime * RainRate);
@@ -383,5 +383,10 @@ public class Player : MonoBehaviour
     public float GetMaxHeight()
     {
         return _cloudHeight;
+    }
+
+    public float GetCloudTime()
+    {
+        return CloudTime;
     }
 }

@@ -9,6 +9,8 @@ public class VisualState : MonoBehaviour
 
     public GameObject WaterRender;
 
+    public GameObject RainParticles;
+
     private Material CloudMaterial;
 
     private Material WaterMaterial;
@@ -23,18 +25,27 @@ public class VisualState : MonoBehaviour
     private string _cloudFade = "Vector1_39F0E4CA";
     private string _waterFade = "Vector1_A4604455";
     private float _shadowMax;
+    private float _rainRateOverTime;
+    private float _cloudTime;
 
     public void Start()
     {
         CloudMaterial = CloudRender.GetComponent<MeshRenderer>().material;
         WaterMaterial = WaterRender.GetComponent<MeshRenderer>().material;
 
-        CloudMaterial.SetFloat(_cloudFade, 0);
+        //CloudMaterial.SetFloat(_cloudFade, 0);
         WaterMaterial.SetFloat(_waterFade, 0);
         _shadowMax = DirectionLight.shadowStrength;
         DirectionLight.shadowStrength = 0;
 
-        CloudRender.SetActive(false);
+        if (RainParticles == null) return;
+        if (!RainParticles.GetComponent<ParticleSystem>()) return;
+
+        _rainRateOverTime = RainParticles.GetComponent<ParticleSystem>().emissionRate;
+
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+        ParticleSystem.ShapeModule sh = ps.shape;
+        Debug.Log("SH: " + sh.scale);
     }
 
     //Called once when state switched
@@ -68,6 +79,10 @@ public class VisualState : MonoBehaviour
     private void StartWater()
     {
         CloudRender.SetActive(false);
+
+        if (RainParticles == null) return;
+        if (!RainParticles.GetComponent<ParticleSystem>()) return;
+        RainParticles.GetComponent<ParticleSystem>().emissionRate = 0;
     }
 
     //Called once when switch to Cloud state
@@ -141,6 +156,18 @@ public class VisualState : MonoBehaviour
     //Called once per frame during Cloud state
     private void UpdateCloud()
     {
+        if (RainParticles == null) return;
+        if (!RainParticles.GetComponent<ParticleSystem>()) return;
+
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+        ParticleSystem.ShapeModule sh = ps.shape;
+        Debug.Log("SH: " + sh);
+
+        if (RainParticles.GetComponent<ParticleSystem>().emissionRate == _rainRateOverTime) return;
+
+        //fade out water material
+        float rate = Mathf.Lerp(RainParticles.GetComponent<ParticleSystem>().emissionRate, _rainRateOverTime, Time.deltaTime / _cloudTime);
+        RainParticles.GetComponent<ParticleSystem>().emissionRate = rate;
     }
 
     //Called once per frame during Steam state
@@ -152,10 +179,20 @@ public class VisualState : MonoBehaviour
     //Called once per frame during Rain state
     private void UpdateRain()
     {
+        if (RainParticles != null)
+        {
+            if (RainParticles.GetComponent<ParticleSystem>())
+            {
+                //fade out water material
+                float rate = Mathf.Lerp(RainParticles.GetComponent<ParticleSystem>().emissionRate, 0, Time.deltaTime / 2);
+                RainParticles.GetComponent<ParticleSystem>().emissionRate = rate;
+            }
+        }
+
         if (CloudMaterial.GetFloat(_cloudFade) == 0) return;
 
         //fade out water material
-        float fade = Mathf.Lerp(CloudMaterial.GetFloat(_cloudFade), 0, Time.deltaTime);
+        float fade = Mathf.Lerp(CloudMaterial.GetFloat(_cloudFade), 0, Time.deltaTime / 2);
         CloudMaterial.SetFloat(_cloudFade, fade);
     }
 
@@ -176,5 +213,10 @@ public class VisualState : MonoBehaviour
     public void SetMaxHeight(float height)
     {
         _maxHeight = height;
+    }
+
+    public void SetCloudTime(float time)
+    {
+        _cloudTime = time;
     }
 }
