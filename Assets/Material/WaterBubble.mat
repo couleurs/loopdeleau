@@ -19,12 +19,17 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _SampleCubemap_7F867E34_Cube_1:
+        m_Texture: {fileID: 8900000, guid: 58a8e075f2caf413c9f601387050a93d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_21359387: 0.59
     - Vector1_6B3FA9B4: 0.73
     - Vector1_6D90BA0: 0.46
-    - Vector1_A4604455: 0.006409339
+    - Vector1_6E944861: 1.88
+    - Vector1_A4604455: 1
     - Vector1_AE141695: 1.63
     - Vector1_D113ACD8: 0.11
     m_Colors:
