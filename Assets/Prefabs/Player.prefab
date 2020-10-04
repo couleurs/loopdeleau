@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 4566246706465013611}
   - component: {fileID: 4566246706465013613}
   - component: {fileID: 4566246706465013610}
-  m_Layer: 0
+  - component: {fileID: 28062079}
+  - component: {fileID: 6123992964836429866}
+  m_Layer: 2
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -123,12 +125,52 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  RainRate: 3
   SlopeVelocity: 1
   GravityVelocity: 5
-  WindVelocity: 1
+  WindVelocity: 0.5
   EvaporationTime: 10
   FloatTime: 5
   RainTime: 2
+  RaycastLayers:
+    serializedVersion: 2
+    m_Bits: 512
+--- !u!114 &28062079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4566246706465013612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e73daeced322e439588895e22128d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6123992964836429866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4566246706465013612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e683aa383c589114fb7f84512e6c611f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WaterBalance: 0
+  RaycastLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  WaterPickUpPrefab: {fileID: 3210891193911624255, guid: 48d3312e018dc3f41a6d7dc7ef817841,
+    type: 3}
+  StartScale: 1
+  PickUpPopulation: 500
+  XMin: -500
+  XMax: 500
+  ZMin: -500
+  ZMax: 500
 --- !u!1 &4566246706765642763
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +180,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4566246706765642760}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CameraPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,6 +267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Render
+      objectReference: {fileID: 0}
+    - target: {fileID: 2690566510200383865, guid: a6cda45400bdd504e8ec1a5503926fcc,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6cda45400bdd504e8ec1a5503926fcc, type: 3}

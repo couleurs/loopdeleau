@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     [Tooltip("Velocity multiplier for input forward/back movement")]
     public AnimationCurve ForwardVelocity;
 
+    [Tooltip("Each RainRate interval in seconds, the cloud will drop water, once all water is dropped, it transitions to rain")]
+    public float RainRate = 3.0f;
+
     [Header("Environment Velocity")]
     [Tooltip("Velocity multiplier when on a sloped surface")]
     public float SlopeVelocity = 1.0f;
@@ -46,6 +49,9 @@ public class Player : MonoBehaviour
     [Tooltip("This is how long it will take the player to go from the sky to the ground")]
     public float RainTime = 2.0f;
 
+    [Header("Raycast Layers")]
+    public LayerMask RaycastLayers;
+
     //private variables
     private float _horizontalInput;
 
@@ -59,13 +65,9 @@ public class Player : MonoBehaviour
     private Vector3 _transitionPosition = Vector3.zero;
     private float _transitionTime = 0;
 
-    // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-        _screenWidth = Screen.width;
-        _rigidBody = GetComponent<Rigidbody>();
-        State = PlayerState.RAIN;
-
+        //set cloud level height
         if (CloudLevel == null)
         {
             _cloudHeight = transform.position.y;
@@ -74,6 +76,14 @@ public class Player : MonoBehaviour
         {
             _cloudHeight = CloudLevel.transform.position.y;
         }
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        _screenWidth = Screen.width;
+        _rigidBody = GetComponent<Rigidbody>();
+        State = PlayerState.RAIN;
 
         if (GetComponent<VisualState>())
         {
@@ -121,10 +131,18 @@ public class Player : MonoBehaviour
     private void CloudUpdate()
     {
         _direction = WindDirection();
+        _transitionTime += Time.deltaTime;
+        if (_transitionTime < RainRate) return;
 
-        //check how close the player is to the peak and switch positions when they reach the peak
-        if (Vector3.Distance(transform.position, new Vector3(0, _cloudHeight, 0)) > 50) return; //TODO: this should be something other than distance, cloud runs out of power
-        //TODO: maybe the cloud drops rain and this is how you get water back? and when it runs out, the cloud is done
+        if (GetComponent<WaterManager>() == null) return;
+
+        GetComponent<WaterManager>().DropWater();
+        _transitionTime = 0;
+    }
+
+    public void ExitCloud()
+    {
+        _transitionTime = 0;
         State = PlayerState.RAIN;
         if (_visualState != null) { _visualState.StartVisualStates(State); }
     }
@@ -202,8 +220,6 @@ public class Player : MonoBehaviour
         //move object towards ground
         _transitionTime += Time.deltaTime;
         Vector3 cloudPosition = new Vector3(_transitionPosition.x, _cloudHeight, _transitionPosition.z);
-        //_transitionTime = Mathf.SmoothStep(0.0f, EvaporationTime, _transitionTime) / EvaporationTime;
-        Debug.Log(_transitionTime);
         Vector3 move = Vector3.Slerp(_transitionPosition, cloudPosition, _transitionTime / EvaporationTime);
         _rigidBody.MovePosition(move);
 
@@ -307,7 +323,7 @@ public class Player : MonoBehaviour
         Vector3 direction = Vector3.zero;
 
         RaycastHit hit;
-        if (!Physics.Raycast(transform.position, Vector3.down, out hit)) return direction; //if nothing is hit we return zero
+        if (!Physics.Raycast(transform.position, Vector3.down, out hit, RaycastLayers)) return direction; //if nothing is hit we return zero
 
         if (hit.transform.gameObject.name == "Ocean") { State = PlayerState.FLOAT; if (_visualState != null) { _visualState.StartVisualStates(State); } return direction; }
 
@@ -334,5 +350,10 @@ public class Player : MonoBehaviour
         wind.y = 0;
         wind.Normalize();
         return wind;
+    }
+
+    public float GetMaxHeight()
+    {
+        return _cloudHeight;
     }
 }
