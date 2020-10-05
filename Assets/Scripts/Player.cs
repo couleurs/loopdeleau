@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     public PlayerState State;
 
     [Header("Objects")]
+    public WaterManager WaterManager;
+
     [Tooltip("This is the gameobject the camera follows")]
     public CinemachineVirtualCamera Cinemachine;
 
@@ -171,7 +173,7 @@ public class Player : MonoBehaviour
 
         Vector3 scale = transform.localScale;
         float distance = scale.x * -10;
-        float height = scale.x * 6.5f;
+        float height = scale.x * 4.5f;
         distance = Mathf.Lerp(_transposer.m_FollowOffset.z, distance, Time.deltaTime);
         height = Mathf.Lerp(_transposer.m_FollowOffset.y, height, Time.deltaTime);
         _transposer.m_FollowOffset.z = distance;
@@ -185,6 +187,15 @@ public class Player : MonoBehaviour
 
     private void CloudUpdate()
     {
+        if (WaterManager != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Space)
+        || Input.GetMouseButtonDown(0)
+        || Input.GetMouseButtonDown(1)
+        || Input.GetMouseButtonDown(2))
+            { WaterManager.DropWater(); }
+        }
+
         _direction = WindDirection();
         _transitionTime += Time.deltaTime;
         if (_transitionTime < _cloudDropRate) return;

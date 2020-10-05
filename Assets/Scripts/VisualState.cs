@@ -28,6 +28,12 @@ public class VisualState : MonoBehaviour
     private float _rainRateOverTime;
     private float _cloudTime;
 
+    [Header("Audio")]
+    public AudioSource AudioSource;
+
+    public AudioClip RainSound;
+    public AudioClip ForestSound;
+
     public void Start()
     {
         CloudMaterial = CloudRender.GetComponent<MeshRenderer>().material;
@@ -78,6 +84,8 @@ public class VisualState : MonoBehaviour
     private void StartWater()
     {
         CloudRender.SetActive(false);
+        AudioSource.clip = ForestSound;
+        AudioSource.Play();
 
         if (RainParticles == null) return;
         if (!RainParticles.GetComponent<ParticleSystem>()) return;
@@ -87,6 +95,8 @@ public class VisualState : MonoBehaviour
     //Called once when switch to Cloud state
     private void StartCloud()
     {
+        AudioSource.clip = RainSound;
+        AudioSource.Play();
     }
 
     //Called once when switch to Steam state
@@ -150,6 +160,9 @@ public class VisualState : MonoBehaviour
         if (DirectionLight.shadowStrength >= _shadowMax) return;
         float shadow = Mathf.Lerp(DirectionLight.shadowStrength, _shadowMax, Time.deltaTime);
         DirectionLight.shadowStrength = shadow;
+
+        //adjust volume
+        AudioSource.volume = shadow / _shadowMax;
     }
 
     //Called once per frame during Cloud state
@@ -166,6 +179,9 @@ public class VisualState : MonoBehaviour
         //fade out water material
         float rate = Mathf.Lerp(RainParticles.GetComponent<ParticleSystem>().emissionRate, _rainRateOverTime, Time.deltaTime / _cloudTime);
         RainParticles.GetComponent<ParticleSystem>().emissionRate = rate;
+
+        //adjust volume
+        AudioSource.volume = rate / _rainRateOverTime * 0.25f;
     }
 
     //Called once per frame during Steam state
@@ -184,6 +200,9 @@ public class VisualState : MonoBehaviour
                 //fade out water material
                 float rate = Mathf.Lerp(RainParticles.GetComponent<ParticleSystem>().emissionRate, 0, Time.deltaTime / 2);
                 RainParticles.GetComponent<ParticleSystem>().emissionRate = rate;
+
+                //adjust volume
+                AudioSource.volume = rate / _rainRateOverTime * 0.25f;
             }
         }
 
@@ -206,6 +225,9 @@ public class VisualState : MonoBehaviour
         if (DirectionLight.shadowStrength <= 0) return;
         float shadow = Mathf.Lerp(DirectionLight.shadowStrength, 0, Time.deltaTime);
         DirectionLight.shadowStrength = shadow;
+
+        //adjust volume
+        AudioSource.volume = shadow / _shadowMax;
     }
 
     public void SetMaxHeight(float height)

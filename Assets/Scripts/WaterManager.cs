@@ -14,6 +14,12 @@ public class WaterManager : MonoBehaviour
     [Tooltip("Water Pick Up prefab")]
     public GameObject WaterPickUpPrefab;
 
+    [Tooltip("Drops that will randomly play when water is picked up")]
+    public AudioClip[] Drops;
+
+    [Tooltip("Drop Audio Source")]
+    public AudioSource AudioSource;
+
     [Tooltip("Starting scale for both player controler and water pick ups")]
     public float StartScale = 0.1f;
 
@@ -52,12 +58,6 @@ public class WaterManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)
-            || Input.GetMouseButtonDown(0)
-            || Input.GetMouseButtonDown(1)
-            || Input.GetMouseButtonDown(2))
-        { DropWater(); }
-
         //scale the player after pickups
         if (transform.localScale != _scale)
         {
@@ -98,6 +98,12 @@ public class WaterManager : MonoBehaviour
         _scale.x += StartScale;
         _scale.y += StartScale;
         _scale.z += StartScale;
+
+        //drop audio
+        if (Drops.Length == 0 || AudioSource == null) return;
+        AudioClip drop = Drops[Random.Range(0, Drops.Length)];
+        AudioSource.clip = drop;
+        AudioSource.Play();
     }
 
     public void DropWater()
