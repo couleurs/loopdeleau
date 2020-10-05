@@ -45,7 +45,6 @@ public class VisualState : MonoBehaviour
 
         ParticleSystem ps = GetComponent<ParticleSystem>();
         ParticleSystem.ShapeModule sh = ps.shape;
-        Debug.Log("SH: " + sh.scale);
     }
 
     //Called once when state switched
@@ -161,7 +160,6 @@ public class VisualState : MonoBehaviour
 
         ParticleSystem ps = GetComponent<ParticleSystem>();
         ParticleSystem.ShapeModule sh = ps.shape;
-        Debug.Log("SH: " + sh);
 
         if (RainParticles.GetComponent<ParticleSystem>().emissionRate == _rainRateOverTime) return;
 
