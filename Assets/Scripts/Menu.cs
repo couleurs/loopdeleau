@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour
 {
     public Image Icon;
     public UnityEngine.Rendering.VolumeProfile profile;
+    public AudioSource AudioSource;
 
     public float PauseRate = 0.1f;
 
@@ -40,7 +41,7 @@ public class Menu : MonoBehaviour
         {
             _paused = !_paused;
             _pauseSequenceFinish = false;
-            Debug.Log("Pause: " + _paused + _pauseSequenceFinish);
+            AudioSource.Play();
         }
 
         if (_pauseSequenceFinish) return;
