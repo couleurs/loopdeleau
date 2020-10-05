@@ -52,6 +52,12 @@ public class WaterManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space)
+            || Input.GetMouseButtonDown(0)
+            || Input.GetMouseButtonDown(1)
+            || Input.GetMouseButtonDown(2))
+        { DropWater(); }
+
         //scale the player after pickups
         if (transform.localScale != _scale)
         {
@@ -104,8 +110,7 @@ public class WaterManager : MonoBehaviour
         if (!Physics.Raycast(rayStart, Vector3.down, out hit, RaycastLayers)) return; //if nothing is hit we return zero
 
         if (hit.transform.gameObject.tag != "Terrain") return; //if it isn't a terrain we also return
-
-        //TODO: create instantiation point checker
+        if (_pickUpIndices.Count == 0) return;
 
         //recycling pick ups
         GameObject pickUp = _pickUps[_pickUpIndices[0]];
