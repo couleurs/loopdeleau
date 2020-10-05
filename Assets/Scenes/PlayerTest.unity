@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -170,6 +170,11 @@ PrefabInstance:
         type: 3}
       propertyPath: EmissionModule.rateOverTime.scalar
       value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 477214032807863217, guid: b2f3647d16f435142961e2d16c878d32,
+        type: 3}
+      propertyPath: far clip plane
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 477214032807863218, guid: b2f3647d16f435142961e2d16c878d32,
         type: 3}
@@ -339,6 +344,11 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 816379230}
+    - target: {fileID: 5992348583734218821, guid: 6bf926db18c1c194e98127d162e712c8,
+        type: 3}
+      propertyPath: m_Lens.FarClipPlane
+      value: 2000
+      objectReference: {fileID: 0}
     - target: {fileID: 5992348583734218938, guid: 6bf926db18c1c194e98127d162e712c8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -472,16 +482,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6823997473818653890, guid: 4b76ec8fa71e8784883015b48275be67,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 6823997473818653890, guid: 4b76ec8fa71e8784883015b48275be67,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 150
-      objectReference: {fileID: 0}
     - target: {fileID: 6823997475435031396, guid: 4b76ec8fa71e8784883015b48275be67,
         type: 3}
       propertyPath: m_LocalPosition.x
