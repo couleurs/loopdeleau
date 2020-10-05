@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
@@ -10,6 +11,9 @@ public class Player : MonoBehaviour
     public PlayerState State;
 
     [Header("Objects")]
+    [Tooltip("This is the gameobject the camera follows")]
+    public CinemachineVirtualCamera Cinemachine;
+
     [Tooltip("This is the gameobject the camera follows")]
     public GameObject CameraPivot;
 
@@ -69,6 +73,7 @@ public class Player : MonoBehaviour
     private Vector3 _transitionPosition = Vector3.zero;
     private float _transitionTime = 0;
     private float _cloudDropRate;
+    private CinemachineTransposer _transposer;
 
     private void Awake()
     {
@@ -98,6 +103,11 @@ public class Player : MonoBehaviour
             _visualState.SetCloudTime(CloudTime);
             _visualState.StartVisualStates(State);
         }
+
+        if (Cinemachine != null)
+        {
+            _transposer = Cinemachine.GetCinemachineComponent<CinemachineTransposer>();
+        }
     }
 
     // Update is called once per frame
@@ -126,6 +136,8 @@ public class Player : MonoBehaviour
         }
 
         //change pivot direction, and render direction for camera and rendering coordination
+        CameraUpdate();
+
         if (CameraPivot != null)
         {
             if (_direction != Vector3.zero)
@@ -142,12 +154,28 @@ public class Player : MonoBehaviour
         }
         if (CloudRender != null)
         {
-            if (_rigidBody.velocity != Vector3.zero)
-                CloudRender.transform.forward = _rigidBody.velocity;
-            else
-                CloudRender.transform.forward = CameraPivot.transform.forward;
+            if (State != PlayerState.STEAM)
+            {
+                if (_rigidBody.velocity != Vector3.zero)
+                    CloudRender.transform.forward = _rigidBody.velocity;
+                else
+                    CloudRender.transform.forward = CameraPivot.transform.forward;
+            }
         }
         if (_visualState != null) { _visualState.UpdateVisualStates(State, _rigidBody.velocity, transform.position.y); }
+    }
+
+    private void CameraUpdate()
+    {
+        if (Cinemachine == null) return;
+
+        Vector3 scale = transform.localScale;
+        float distance = scale.x * -10;
+        float height = scale.x * 6.5f;
+        distance = Mathf.Lerp(_transposer.m_FollowOffset.z, distance, Time.deltaTime);
+        height = Mathf.Lerp(_transposer.m_FollowOffset.y, height, Time.deltaTime);
+        _transposer.m_FollowOffset.z = distance;
+        _transposer.m_FollowOffset.y = height;
     }
 
     private void WaterUpdate()
@@ -243,15 +271,15 @@ public class Player : MonoBehaviour
 
     private void FixedSteam()
     {
-        //check the train right below the player
+        //set the sky position to move steam to cloud
         if (_transitionPosition == Vector3.zero) _transitionPosition = transform.position;
 
-        //move object towards ground
+        //move object towards cloud layer
         _transitionTime += Time.deltaTime;
         Vector3 cloudPosition = new Vector3(_transitionPosition.x, _cloudHeight, _transitionPosition.z);
         Vector3 move = Vector3.Slerp(_transitionPosition, cloudPosition, _transitionTime / EvaporationTime);
         _rigidBody.MovePosition(move);
-
+        CloudRender.transform.forward = WindDirection(); //set cloud direction so it doesn't flip as soon we enter cloud state
         //check how far we are away from the gounrd
         if (transform.position.y < _cloudHeight - transform.localScale.y / 2) return;
 
@@ -372,7 +400,7 @@ public class Player : MonoBehaviour
     /// Direction of the wind, assumes the environment's tallest point is at 0,0,0 and gets the direction towards that
     /// </summary>
     /// <returns></returns>
-    private Vector3 WindDirection()
+    public Vector3 WindDirection()
     {
         Vector3 wind = -transform.position;
         wind.y = 0;

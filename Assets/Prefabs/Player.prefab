@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4566246706465013612}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 159.3, y: 116.8, z: 66.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 4566246706765642760}
   - {fileID: 4566246705941057105}
@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   State: 0
+  Cinemachine: {fileID: 0}
   CameraPivot: {fileID: 4566246706765642763}
   WaterRender: {fileID: 4566246705941057104}
   CloudRender: {fileID: 7255558165888475581}
@@ -194,7 +195,7 @@ MonoBehaviour:
     m_Bits: 512
   WaterPickUpPrefab: {fileID: 3210891193911624255, guid: 48d3312e018dc3f41a6d7dc7ef817841,
     type: 3}
-  StartScale: 1
+  StartScale: 0.5
   PickUpPopulation: 500
   XMin: -500
   XMax: 500
@@ -497,6 +498,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4144480493657609982, guid: a6cda45400bdd504e8ec1a5503926fcc,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 0.11764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 4144480493657609982, guid: a6cda45400bdd504e8ec1a5503926fcc,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.a
+      value: 0.11764706
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6cda45400bdd504e8ec1a5503926fcc, type: 3}
