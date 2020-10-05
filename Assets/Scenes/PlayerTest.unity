@@ -127,6 +127,72 @@ Light:
     type: 3}
   m_PrefabInstance: {fileID: 5994227555023664488}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &696805913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 696805916}
+  - component: {fileID: 696805915}
+  - component: {fileID: 696805914}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &696805914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696805913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &696805915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696805913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &696805916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696805913}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &816379230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4566246706765642760, guid: fa9aa00ba4f53f9488389f928c655440,
@@ -140,36 +206,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 477214032660844091, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: ShapeModule.alignToDirection
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 477214032660844091, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 477214032660844091, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: ShapeModule.m_Scale.x
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 477214032660844091, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: ShapeModule.m_Scale.z
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 477214032660844091, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 477214032807863217, guid: b2f3647d16f435142961e2d16c878d32,
-        type: 3}
-      propertyPath: far clip plane
-      value: 2000
-      objectReference: {fileID: 0}
     - target: {fileID: 477214032807863218, guid: b2f3647d16f435142961e2d16c878d32,
         type: 3}
       propertyPath: m_LocalPosition.x
