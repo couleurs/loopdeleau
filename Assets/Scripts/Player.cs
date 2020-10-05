@@ -265,8 +265,10 @@ public class Player : MonoBehaviour
 
     private void FixedCloud()
     {
-        //apply wind
-        _rigidBody.AddForce(_direction * WindVelocity, ForceMode.Acceleration);
+        //apply wind based on distance from middle
+        float distance = Vector3.Distance(transform.position, new Vector3(0, _cloudHeight, 0));
+        float normalizedDistance = MinMax(distance, 0, 500, 0.01f, 1.5f);
+        _rigidBody.AddForce(_direction * WindVelocity * normalizedDistance, ForceMode.Acceleration);
         //_rigidBody.velocity = _direction * WindVelocity * Time.deltaTime;
         //apply horizontal input force
         if (_horizontalInput != 0)
@@ -427,5 +429,11 @@ public class Player : MonoBehaviour
     public float GetCloudTime()
     {
         return CloudTime;
+    }
+
+    public float MinMax(float x, float min, float max, float new_min, float new_max)
+    {
+        x = (x - min) * (new_max - new_min) / (max - min) + new_min;
+        return x;
     }
 }
