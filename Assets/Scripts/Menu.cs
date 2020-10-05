@@ -69,7 +69,6 @@ public class Menu : MonoBehaviour
         //unpause game
         if (!_paused)
         {
-            Debug.Log(_dof.focusDistance.GetValue<float>());
             //guard statement if paused
             if (_dof.focusDistance.GetValue<float>() >= _focusDistance) { Debug.Log("S"); _pauseSequenceFinish = true; return; }
 
