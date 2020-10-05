@@ -187,7 +187,7 @@ public class Player : MonoBehaviour
 
     private void CloudUpdate()
     {
-        if (WaterManager != null)
+        if (WaterManager != null && Time.timeScale != 0)
         {
             if (Input.GetKeyDown(KeyCode.Space)
         || Input.GetMouseButtonDown(0)

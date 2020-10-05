@@ -37,11 +37,28 @@ public class Menu : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.P))
+        if (_paused)
         {
-            _paused = !_paused;
-            _pauseSequenceFinish = false;
-            AudioSource.Play();
+            if (Input.GetKeyDown(KeyCode.Return)
+                || Input.GetKeyDown(KeyCode.P)
+                || Input.GetKeyDown(KeyCode.Space)
+                || Input.GetMouseButtonDown(0)
+                || Input.GetMouseButtonDown(1)
+                || Input.GetMouseButtonDown(2))
+            {
+                _paused = !_paused;
+                _pauseSequenceFinish = false;
+                AudioSource.Play();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.P))
+            {
+                _paused = !_paused;
+                _pauseSequenceFinish = false;
+                AudioSource.Play();
+            }
         }
 
         if (_pauseSequenceFinish) return;
